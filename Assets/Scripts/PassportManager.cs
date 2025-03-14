@@ -8,7 +8,7 @@ public class PassportManager : MonoBehaviour
 {
     public GameObject passportPrefab; // Prefab du passeport
     public Transform passportContainer; // Conteneur (GridLayoutGroup)
-    public PassportZoomPanel zoomPanel; // Panel de zoom
+    public PassportZoomPanel zoomPanel; // Référence vers le Panel de Zoom
 
     public List<Sprite> avatarSprites; // Liste des avatars
     public List<Passport> currentPassports = new List<Passport>();
@@ -45,16 +45,17 @@ public class PassportManager : MonoBehaviour
             PassportUI passportUIScript = newPassportUI.GetComponent<PassportUI>();
             passportUIScript.Setup(newPassport, this);
 
-            // ✅ Correction : Réduction de la taille dès le début
-            //newPassportUI.transform.localScale = new Vector3(0.5f, 0.5f, 1f); // Taille réduite à 50%
+            // ✅ Corrige la taille immédiatement après l’instanciation
+            RectTransform rectTransform = newPassportUI.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(175, 100); // Fixe la taille
 
-            // ✅ Animation fluide d'apparition sans agrandir trop
-            newPassportUI.transform.DOScale(new Vector3(0.8f, 0.8f, 1f), 0.5f).SetEase(Ease.OutBack);
+            // ✅ Corrige l’animation pour ne pas rétrécir le passeport
+            newPassportUI.transform.localScale = Vector3.zero;
+            newPassportUI.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
 
             yield return new WaitForSeconds(0.1f);
         }
     }
-
     public void OpenZoomPanel(Passport passport)
     {
         if (passport == null)
@@ -63,6 +64,7 @@ public class PassportManager : MonoBehaviour
             return;
         }
 
+        Debug.Log("🔍 Zoom sur : " + passport.name);
         zoomPanel.ShowPassport(passport);
     }
 }

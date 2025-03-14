@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
     private void UpdateUI()
     {
         popularitySlider.value = planetPopularity;
-        happyCitizensText.text = "☻" + happyCitizens;
+        happyCitizensText.text = "" + happyCitizens;
 
         if (planetPopularity <= 0)
         {
