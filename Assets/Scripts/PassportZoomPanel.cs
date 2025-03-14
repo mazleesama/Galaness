@@ -16,6 +16,16 @@ public class PassportZoomPanel : MonoBehaviour
 
     private Passport currentPassport;
 
+    void Start()
+    {
+        gameObject.SetActive(false); // ✅ Cache le panel au début du jeu
+    }
+
+    void Awake()
+    {
+        gameObject.SetActive(false); // ✅ Forcer la désactivation dès que la scène charge
+    }
+
     public void ShowPassport(Passport passport)
     {
         if (passport == null)
@@ -28,6 +38,7 @@ public class PassportZoomPanel : MonoBehaviour
 
         currentPassport = passport;
         gameObject.SetActive(true); // ✅ Active le panel
+        Debug.Log("📜 Panel de zoom activé ? " + gameObject.activeSelf); // TEST
 
         nameText.text = passport.name;
         ageText.text = "Age: " + passport.age;
@@ -38,10 +49,9 @@ public class PassportZoomPanel : MonoBehaviour
         CanvasGroup canvasGroup = gameObject.GetComponent<CanvasGroup>();
         if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
 
-        canvasGroup.alpha = 0;
-        canvasGroup.DOFade(1, 0.5f).SetEase(Ease.OutCubic);
-
-        Debug.Log("📜 Panel de zoom affiché avec animation");
+        canvasGroup.alpha = 1; // ✅ Forcer l'affichage
+        canvasGroup.blocksRaycasts = true;
+        canvasGroup.interactable = true;
     }
 
     public void OnClickAccept()

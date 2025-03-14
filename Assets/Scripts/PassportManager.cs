@@ -65,6 +65,13 @@ public class PassportManager : MonoBehaviour
         }
 
         Debug.Log("🔍 Zoom sur : " + passport.name);
+
+        if (zoomPanel == null)
+        {
+            Debug.LogError("❌ ERREUR : `zoomPanel` est null !");
+            return;
+        }
+
         zoomPanel.ShowPassport(passport);
     }
 }
